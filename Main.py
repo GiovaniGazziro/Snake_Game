@@ -99,14 +99,7 @@ class game():
                 print("\n")
                 print("type error: " + str(e))
 
-        def score(self, screen):
-            try:
-                pass
-                # small_font = pygame.font.SysFont('OpenSans-BoldItalic.ttf', 25)
-                # text = small_font.render("Score: "+ str(self.score), True, (0,0,0))
-                # screen.blit(text, [0,0])
-            except:
-                print("Unexpected error:", sys.exc_info()[0])
+       
         def main(self):
             try:
                 print('Enter your name:')
@@ -246,7 +239,14 @@ class game():
 
                     small_font = pygame.font.SysFont('OpenSans-BoldItalic.ttf', 25)
                     text = small_font.render("Score: "+ str(self.score), True, (0,0,0))
+                    nome_jogando = small_font.render("Jogador: "+ nome, True, (0,0,0))
+                    
                     screen.blit(text, [0,0])
+                    screen.blit(nome_jogando, [400, 0])
+
+
+
+
                     pygame.display.update()
 
             except SystemExit:
