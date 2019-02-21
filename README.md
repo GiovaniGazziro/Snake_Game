@@ -1,5 +1,5 @@
 # Snake_Game
-snaek game
+
 
 
 Olá a todos!
