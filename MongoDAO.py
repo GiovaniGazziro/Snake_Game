@@ -1,5 +1,6 @@
 import pymongo
 from pymongo import MongoClient
+import json
 
 
 class MongoDAO():
@@ -12,11 +13,6 @@ class MongoDAO():
 
     def insert_mongo(self, informacoes):
         try:
-            print("\n")
-            print("informacoes")
-            print("\n")
-            print(informacoes)
-            print("\n")
             self.Data.insert(informacoes)
         except:
             print("Unexpected error:", sys.exc_info()[0])
