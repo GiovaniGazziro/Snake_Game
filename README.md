@@ -18,8 +18,8 @@ pórem agora se tornou um grande desafio!
    
    Dentro do próprio projeto existe um Fork, um voltado para humanos e outro para IA
    
-    * Em humanos o jogo apresenta certas peculiaridades, como por exemplo, o nascimento da maça. Esta demora 3 segundos para nascer
-      e nasce com base na posição da atual da cobra. Com isso conseguimos rastrear o padrão de movimentos e a zona de conforto 
+    * Em humanos o jogo apresenta certas peculiaridades, como por exemplo, o nascimento da maça.
+      Esta demora 3 segundos para nascer e nasce com base na posição da atual da cobra. Com isso conseguimos rastrear o padrão de movimentos e a zona de conforto 
       de cada jogador. Em um futuro, existe o objetivo de correlacionar a área de preferencia do jogador X caracteristicas fisicas e
       emocionais
    
