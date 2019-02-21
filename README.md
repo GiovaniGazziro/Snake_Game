@@ -18,14 +18,16 @@ pórem agora se tornou um grande desafio!
    
    Dentro do próprio projeto existe um Fork, um voltado para humanos e outro para IA
    
-   Para humanos o jogo apresenta certas peculiaridades, como por exemplo, o nascimento da maça.
+      Para humanos o jogo apresenta certas peculiaridades, como por exemplo, o nascimento da maça.
+      
       Esta demora 3 segundos para nascer e nasce com base na posição da atual da cobra.
+      
       Com isso conseguimos rastrear o padrão de movimentos e a zona de conforto 
       de cada jogador. Em um futuro, existe o objetivo de correlacionar a área de preferencia do jogador X caracteristicas fisicas 
       e emocionais
    
    
-   Para a IA o jogo é mais dinâmico, voltado para ser rápido. A maça não espera o delay para nascer, por exemplo.
+      Para a IA o jogo é mais dinâmico, voltado para ser rápido. A maça não espera o delay para nascer, por exemplo.
    
    
    
@@ -39,7 +41,7 @@ pórem agora se tornou um grande desafio!
    
    https://trello.com/b/xX7JWSZO/snake-game
    
-    Contato: giovani.gazziro@gmail.com
+   Contato: giovani.gazziro@gmail.com
    
     
     Agradecimento em especial a um amigo, Luis Otte, por me instruir em diversos momentos do projeto.
