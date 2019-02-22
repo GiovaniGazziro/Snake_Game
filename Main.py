@@ -15,7 +15,7 @@ class game():
     def __init__(self):
         self.fruta = None
         self.posicao_self = [100,50]
-        self.corpo_cobra = [[200, 200], [210, 200], [220, 200],[230, 200],[240, 200],[250, 200],[260, 200] ]
+        self.corpo_cobra = [[200, 200], [210, 200], [220, 200],[230, 200],[240, 200],[250, 200], [260, 200], [270, 200], [280, 200], [290, 200], [300, 200],    ]
         self.self_skin = pygame.Surface((10,10))
         self.self_skin.fill((124,252,0))
         
@@ -23,29 +23,35 @@ class game():
         self.informacoes_comeu_fruta = []   
         self.mongo = MongoDAO()
 
-        self.lista_frame = []
 
 
-    def distancia_pontos(self):
-        # Calculando a distância
-        t =  sqrt((self.fruta_posicao[0]-self.fruta_posicao[1])**2) + ((self.corpo_cobra[0][0]-self.corpo_cobra[0][1])**2)
-        return t
+    def manhattan(self):
+
+        return abs(self.corpo_cobra[0][0] - self.fruta_posicao[0]) + abs(self.corpo_cobra[0][1] - self.fruta_posicao[1])
 
     def loggar(self):
-        self.lista_frame.append(self.fruta_posicao[0]) #posicao Y da fruta
-        self.lista_frame.append(self.fruta_posicao[1]) #posicao X da fruta
-        self.lista_frame.append(self.corpo_cobra[0][0]) #posicao X da cabeca
-        self.lista_frame.append(self.corpo_cobra[0][1]) # posicao Y da cabeca
-        self.lista_frame.append(self.corpo_cobra[0][0]-self.fruta_posicao[0]) #distancia fruta eixo X
-        self.lista_frame.append(self.corpo_cobra[0][1]-self.fruta_posicao[1]) #distancia fruta eixo Y
-        self.lista_frame.append(self.corpo_cobra[0][0]-600) #distancia entre cabeca e parede X
-        self.lista_frame.append(self.corpo_cobra[0][1]-600) #distancia entre cabeca e parede Y
+        lista_frame = []
+        lista_frame.extend((self.fruta_posicao[0], self.fruta_posicao[1])) #posicao da fruta
+        lista_frame.extend((self.corpo_cobra[0][0], self.corpo_cobra[0][1])) #posicao da cabeca
 
 
-        self.lista_frame.append(self.my_direction)
+        lista_frame.extend((600 - self.corpo_cobra[0][0], 600 - self.corpo_cobra[0][1])) #distancia entre cabeca e parede X
 
-        logging.info(str(self.lista_frame))
-        self.lista_frame.clear()
+        manhattan = self.manhattan()
+
+        if(manhattan == 0):
+            lista_frame.extend((manhattan, 1)) #distancia ate a fruta
+        else:
+            lista_frame.extend((manhattan, 0)) #distancia ate a fruta
+
+        t = self.preve_colisao()
+        lista_frame.extend((self.my_direction, self.morte, t[0], t[1], t[2]))
+
+        
+
+        print(lista_frame)
+        logging.info(str(lista_frame))
+        lista_frame.clear()
 
 
 
@@ -100,7 +106,60 @@ class game():
             print("Unexpected error:", sys.exc_info()[0])
     
 
+    def preve_colisao(self):
+        lista = [0,0,0]
 
+        if(self.my_direction == 3):
+            morte = (self.corpo_cobra[0][1]-10, self.corpo_cobra[0][1]+10)  
+
+
+            variavel = (self.corpo_cobra[0][0]-10, self.corpo_cobra[0][1])  
+            
+            # print("cabeca:"+str(self.corpo_cobra[0]))
+            # print("corpo:"+str(self.corpo_cobra[1:]))
+
+            if(variavel[0] == 0):
+                lista[0] = 1
+            for corpo in self.corpo_cobra[1:]:
+
+                if(variavel == corpo):
+                    lista[0] = 1
+
+        
+        if(self.my_direction == 2):
+            variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]+10)  
+            if(variavel[1] == 610):
+                lista[0] = 1
+            for corpo in self.corpo_cobra[1:]:
+                if(variavel == corpo):
+                    lista[0] = 1
+
+        if(self.my_direction == 1):
+            variavel = (self.corpo_cobra[0][0]+10, self.corpo_cobra[0][1])  
+            if(variavel[0] == 610):
+                lista[0] = 1
+            for corpo in self.corpo_cobra[1:]:
+                if(variavel == corpo):
+                    lista[0] = 1
+
+        if(self.my_direction == 0):
+            variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]-10)  
+            if(variavel[1] == 0):
+                lista[0] = 1
+            for corpo in self.corpo_cobra[1:]:
+                if(variavel == corpo):
+                    lista[0] = 1
+
+
+
+
+        if((self.corpo_cobra[0][0]+10 > 590) or (self.corpo_cobra[0][0]-10 < 0)): #SE VIRAR DIREITA MORRE
+            lista[1] = 1
+        if((self.corpo_cobra[0][1]+10 > 590) or (self.corpo_cobra[0][1]-10 < 0)): #SE VIRAR ESQUERDA MORRE
+            lista[2] = 1
+
+        return lista[0], lista[1], lista[2]
+            
 
     def pause(self, screen):
         try:
@@ -134,7 +193,6 @@ class game():
         try:
             # print('Enter your name:')
             # nome = input()
-
             nome = 'teste'
             self.informacoes_partida.update({'Nome':'teste'})
             logging.basicConfig(filename="logfilename.log", level=logging.INFO)
@@ -156,9 +214,7 @@ class game():
             DOWN = 2
             LEFT = 3
 
-
-
-
+            self.morte = 0
             self.my_direction = LEFT #direcao inicial
             
                 #TO HUMANS
@@ -175,9 +231,11 @@ class game():
 
             while True:
                 # self.distancia = self.distancia_pontos()
-
+                # print("cabeca: " + str(self.corpo_cobra[0]))
+                
+                # print("corpo:" + str(self.corpo_cobra[1:]))
                 self.loggar()
-                clock.tick(game.velocidade)
+                clock.tick(25)
                 for event in pygame.event.get(): #for principal do jogo
                     if event.type == pygame.QUIT: #fechar o jogo 
                         pygame.quit()
@@ -235,19 +293,25 @@ class game():
                 
                 
                 if(self.corpo_cobra[0] in self.corpo_cobra[1:]): #trombou com o corpo
+                    self.morte = 1
                     self.loggar()
                     self.registra_informacoes()
+                    game.velocidade=1                    
                     pygame.quit()
                     sys.exit()
-                if(self.corpo_cobra[0][0] < 0 or self.corpo_cobra[0][0] > size[0]): #saiu da tela
+                if(self.corpo_cobra[0][0] < 0 or self.corpo_cobra[0][0] > 590): #saiu da tela
+                    self.morte = 1
                     self.loggar()
                     self.registra_informacoes()
+                    game.velocidade=1                    
                     pygame.quit()
                     sys.exit()
 
-                if(self.corpo_cobra[0][1] < 0 or self.corpo_cobra[0][1] > size[0]): #saiu da tela
+                if(self.corpo_cobra[0][1] < 0 or self.corpo_cobra[0][1] > 590): #saiu da tela
+                    self.morte = 1
                     self.loggar()
                     self.registra_informacoes()
+                    game.velocidade=1                    
                     pygame.quit()
                     sys.exit()
                     
