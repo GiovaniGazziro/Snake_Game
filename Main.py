@@ -49,7 +49,7 @@ class game():
 
         
 
-        print(lista_frame)
+        # print(lista_frame)
         logging.info(str(lista_frame))
         lista_frame.clear()
 
@@ -107,56 +107,112 @@ class game():
     
 
     def preve_colisao(self):
-        lista = [0,0,0]
-
-        if(self.my_direction == 3):
-            morte = (self.corpo_cobra[0][1]-10, self.corpo_cobra[0][1]+10)  
+        lista = [0,0,0,0]
+        # print(self.corpo_cobra[0])
 
 
-            variavel = (self.corpo_cobra[0][0]-10, self.corpo_cobra[0][1])  
-            
-            # print("cabeca:"+str(self.corpo_cobra[0]))
-            # print("corpo:"+str(self.corpo_cobra[1:]))
+        if(self.my_direction == 1 or self.my_direction == 3):
+            variavel_cima = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]+10)
+            variavel_baixo = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]-10)
+            print('\n')
+            print(variavel_cima)
+            print('\n')
 
-            if(variavel[0] == 0):
-                lista[0] = 1
             for corpo in self.corpo_cobra[1:]:
+                print(corpo)
 
-                if(variavel == corpo):
-                    lista[0] = 1
+                # if(variavel_cima == corpo):
+                #     print("NAO PODE VIRAR PRA BAIXIOOOOOOOOOOOOOOOO")
+
+                
+            # if(variavel 
+
+
+        # if(self.my_direction == 0):
+        #     variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]-10)  
+        #     for corpo in self.corpo_cobra[1:]:
+        #         if(variavel == corpo):
+        #             lista[0] = "UP 1"
+
+
+        # if(self.my_direction == 1):
+        #     variavel = (self.corpo_cobra[0][0]+10, self.corpo_cobra[0][1])  
+        #     for corpo in self.corpo_cobra[1:]:
+        #         if(variavel == corpo):
+        #             lista[1] = "RIGHT1"
+
 
         
-        if(self.my_direction == 2):
-            variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]+10)  
-            if(variavel[1] == 610):
-                lista[0] = 1
-            for corpo in self.corpo_cobra[1:]:
-                if(variavel == corpo):
-                    lista[0] = 1
-
-        if(self.my_direction == 1):
-            variavel = (self.corpo_cobra[0][0]+10, self.corpo_cobra[0][1])  
-            if(variavel[0] == 610):
-                lista[0] = 1
-            for corpo in self.corpo_cobra[1:]:
-                if(variavel == corpo):
-                    lista[0] = 1
-
-        if(self.my_direction == 0):
-            variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]-10)  
-            if(variavel[1] == 0):
-                lista[0] = 1
-            for corpo in self.corpo_cobra[1:]:
-                if(variavel == corpo):
-                    lista[0] = 1
+        # if(self.my_direction == 2):
+        #     variavel = (self.corpo_cobra[0][0], self.corpo_cobra[0][1]+10)  
+        #     if(variavel[1] == 610):
+        #         lista[2] = "DOWN 1"
+        #     for corpo in self.corpo_cobra[1:]:
+        #         if(variavel == corpo):
+        #             lista[2] = "DOWN 1"
 
 
+        # if(self.my_direction == 3):
+        #     variavel = (self.corpo_cobra[0][0]-10, self.corpo_cobra[0][1])  
+        #     for corpo in self.corpo_cobra[1:]:
+        #         if(variavel == corpo):
+        #             lista[3] = "LEFT 1"
 
 
-        if((self.corpo_cobra[0][0]+10 > 590) or (self.corpo_cobra[0][0]-10 < 0)): #SE VIRAR DIREITA MORRE
+            # UP = 0
+            # RIGHT = 1
+            # DOWN = 2
+            # LEFT = 3
+                        # === COLISAO COM PARES === #
+        if(self.corpo_cobra[0][1]+10 > 590 ): #Unico movimento possivel eh ir para cima
+            lista[0] = 1
+            lista[1] = 0
+            lista[2] = 0
+            lista[3] = 0
+
+        if(self.corpo_cobra[0][0]-10 < 0 ): #Unico movimento possivel é virar para direita
+            lista[0] = 0
             lista[1] = 1
-        if((self.corpo_cobra[0][1]+10 > 590) or (self.corpo_cobra[0][1]-10 < 0)): #SE VIRAR ESQUERDA MORRE
+            lista[2] = 0
+            lista[3] = 0
+
+
+
+        if(self.corpo_cobra[0][1]-10 < 0 ): #Unico movimento possivel é ir para baixo
+            lista[0] = 0
+            lista[1] = 0
             lista[2] = 1
+            lista[3] = 0
+
+
+
+        if((self.corpo_cobra[0][0]+10 > 590)): #Unico movimento possivel é virar para ESQUERDA
+            lista[0] = 0
+            lista[1] = 0
+            lista[2] = 0
+            lista[3] = 1
+                        # === COLISAO COM PARES === #
+
+
+                        # === COLISAO COM COBRINHA === #
+
+
+
+
+
+
+                        # === COLISAO COM COBRINHA === #
+
+
+
+        # if((self.corpo_cobra[0][0]+10 > 590) or (self.corpo_cobra[0][0]-10 < 0)): #SE VIRAR DIREITA MORRE
+        #     lista[1] = 10
+
+
+
+        # if((self.corpo_cobra[0][1]+10 > 590) or (self.corpo_cobra[0][1]-10 < 0)): #SE VIRAR ESQUERDA MORRE
+            # lista[3] = 100
+        # print(lista)
 
         return lista[0], lista[1], lista[2]
             
@@ -235,7 +291,7 @@ class game():
                 
                 # print("corpo:" + str(self.corpo_cobra[1:]))
                 self.loggar()
-                clock.tick(25)
+                clock.tick(15)
                 for event in pygame.event.get(): #for principal do jogo
                     if event.type == pygame.QUIT: #fechar o jogo 
                         pygame.quit()
@@ -293,14 +349,14 @@ class game():
                 
                 
                 if(self.corpo_cobra[0] in self.corpo_cobra[1:]): #trombou com o corpo
-                    self.morte = 1
+                    self.morte = -1
                     self.loggar()
                     self.registra_informacoes()
                     game.velocidade=1                    
                     pygame.quit()
                     sys.exit()
                 if(self.corpo_cobra[0][0] < 0 or self.corpo_cobra[0][0] > 590): #saiu da tela
-                    self.morte = 1
+                    self.morte = -1
                     self.loggar()
                     self.registra_informacoes()
                     game.velocidade=1                    
@@ -308,7 +364,7 @@ class game():
                     sys.exit()
 
                 if(self.corpo_cobra[0][1] < 0 or self.corpo_cobra[0][1] > 590): #saiu da tela
-                    self.morte = 1
+                    self.morte = -1
                     self.loggar()
                     self.registra_informacoes()
                     game.velocidade=1                    
